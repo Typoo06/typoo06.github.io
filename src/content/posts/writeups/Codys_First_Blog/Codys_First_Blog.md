@@ -41,7 +41,7 @@ draft: false
 <?php echo file_get_contents("index.php")?> 
 ```
 2. After submitting comments, those are appered in admin panel, but still invisible in client side. in this period, our payloads still exists as a string and actually they were not triggered. So, i need to find a way to trigger these payloads.
-3. Let's do a research, i learned that we can simply trigger a vulnerable PHP website by using admin panel to approve our comments, then sending request to URL with */?page=http://localhost/index* parameter, view the source of this page, we got the third flag
+3. After conducting some research, i discovered that the application can be exploited by using the admin panel to approve a crafted comment. By sending a request with the */?page=http://localhost/index* parameter and viewing the page source, the third flag is revealed
 ![Third flag](flag-2.png) 
 
 ### Let's dive deep into how it work
