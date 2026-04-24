@@ -40,8 +40,8 @@ draft: false
 <?php echo readfile("index.php")?>
 <?php echo file_get_contents("index.php")?> 
 ```
-2. After submitting comments, those are appered in admin panel, but still invisible in client side. in this period, our payloads still exists as a string and actually they were not triggered. So, i need to find a way to trigger these payloads.
-3. After conducting some research, i discovered that the application can be exploited by using the admin panel to approve a crafted comment. By sending a request with the */?page=http://localhost/index* parameter and viewing the page source, the third flag is revealed
+2. Upon submission, the comments appeared in the admin panel but remained invisible on the client side. At this stage, the payloads were stored strictly as plain text and did not execute
+3. To trigger the execution, I approved the crafted comment via the admin panel. Sending a subsequent request with the */?page=http://localhost/index* parameter forces the server to evaluate the stored payload, then the third flag is revealed
 ![Third flag](flag-2.png) 
 
 ### Let's dive deep into how it work
