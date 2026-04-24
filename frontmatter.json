@@ -51,7 +51,6 @@
           "name": "category",
           "type": "choice",
           "options": [
-            "Labs",
             "Writeups",
             "Theory",
             "Notes",
