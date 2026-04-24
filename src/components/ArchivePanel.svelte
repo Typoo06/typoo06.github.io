@@ -7,16 +7,19 @@ import { getPostUrlBySlug, url } from "../utils/url-utils";
 
 export let tags: string[] = [];
 export let categories: string[] = [];
+export let seriesList: string[] = [];
 export let sortedPosts: Post[] = [];
 
 const params = new URLSearchParams(window.location.search);
 tags = params.has("tag") ? params.getAll("tag") : [];
 categories = params.has("category") ? params.getAll("category") : [];
+seriesList = params.has("series") ? params.getAll("series") : [];
 const uncategorized = params.get("uncategorized");
 
 const activeFilters: string[] = [
     ...tags.map((tag) => `#${tag}`),
     ...categories,
+    ...seriesList.map((series) => `${i18n(I18nKey.series)}: ${series}`),
     ...(uncategorized ? [i18n(I18nKey.uncategorized)] : []),
 ];
 
@@ -25,6 +28,7 @@ interface Post {
 	data: {
 		title: string;
 		tags: string[];
+        series?: string;
         category?: string | null;
 		published: Date;
 	};
@@ -63,6 +67,12 @@ onMount(async () => {
 			(post) => post.data.category && categories.includes(post.data.category),
 		);
 	}
+
+    if (seriesList.length > 0) {
+        filteredPosts = filteredPosts.filter((post) =>
+            post.data.series ? seriesList.includes(post.data.series) : false,
+        );
+    }
 
 	if (uncategorized) {
 		filteredPosts = filteredPosts.filter((post) => !post.data.category);
@@ -107,7 +117,7 @@ onMount(async () => {
 
     {#if groups.length === 0}
         <div class="rounded-xl border border-dashed border-[var(--line-divider)] px-4 py-4 text-sm text-50">
-            No posts matched the current archive filters. Try a different tag/category or clear filters.
+            No posts matched the current archive filters. Try a different tag/category/series or clear filters.
         </div>
     {/if}
 

@@ -92,6 +92,11 @@ const jsonLd = {
                 <span data-pagefind-meta="category" data-pagefind-filter="category">
                     {entry.data.category || i18n(I18nKey.uncategorized)}
                 </span>
+                {entry.data.series?.trim() && (
+                    <span data-pagefind-meta="series" data-pagefind-filter="series">
+                        {entry.data.series.trim()}
+                    </span>
+                )}
                 {entry.data.tags.length > 0 && (
                     <span data-pagefind-meta="tags" data-pagefind-filter="tags">
                         {entry.data.tags.join(", ")}
@@ -102,11 +107,12 @@ const jsonLd = {
             <!-- metadata -->
             <div class="onload-animation">
                 <PostMetadata
-                        class="mb-5"
-                        published={entry.data.published}
-                        updated={entry.data.updated}
-                        tags={entry.data.tags}
-                        category={entry.data.category}
+                    class="mb-5"
+                    published={entry.data.published}
+                    updated={entry.data.updated}
+                    tags={entry.data.tags}
+                    series={entry.data.series}
+                    category={entry.data.category}
                 ></PostMetadata>
                 {!entry.data.image && <div class="border-[var(--line-divider)] border-dashed border-b-[1px] mb-5"></div>}
             </div>

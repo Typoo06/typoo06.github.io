@@ -22,6 +22,7 @@ const fakeResult: SearchResult[] = [
 			title: "Lab: Blind SQLi Practice Notes",
 			description: "A short walkthrough of payload testing and validation in a local lab.",
 			category: "Labs",
+			series: "Web Security Labs",
 			tags: "sqli, web, recon",
 		},
 		excerpt: "Search uses <mark>mock data</mark> in development mode.",
@@ -33,6 +34,7 @@ const fakeResult: SearchResult[] = [
 			description:
 				"A framework for quickly choosing high-signal targets and avoiding noisy scans.",
 			category: "Theory",
+			series: "Recon Fundamentals",
 			tags: "methodology, bug-bounty",
 		},
 		excerpt: "Run <mark>pnpm build</mark> and <mark>pnpm preview</mark> to test real Pagefind search.",
@@ -193,7 +195,7 @@ $: if (initialized) {
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
 ">
     <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
-    <input id="search-input-desktop" placeholder="{i18n(I18nKey.search)} title, tag, category..." bind:value={keywordDesktop} on:focus={() => setPanelVisibility(true, true)}
+	<input id="search-input-desktop" placeholder="{i18n(I18nKey.search)} title, tag, category, series..." bind:value={keywordDesktop} on:focus={() => setPanelVisibility(true, true)}
            class="transition-all pl-10 text-sm bg-transparent outline-0
          h-full w-40 active:w-60 focus:w-60 text-black/50 dark:text-white/50 pr-10"
     >
@@ -216,7 +218,7 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
       dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
   ">
         <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"></Icon>
-		<input placeholder="{i18n(I18nKey.search)} title, tag, category..." bind:value={keywordMobile}
+		<input placeholder="{i18n(I18nKey.search)} title, tag, category, series..." bind:value={keywordMobile}
                class="pl-10 absolute inset-0 text-sm bg-transparent outline-0
                focus:w-60 text-black/50 dark:text-white/50"
         >
@@ -226,7 +228,7 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
 	{#if isSearching}
 		<div class="search-feedback-card mt-2">
 			<div class="text-sm font-semibold text-75">Searching...</div>
-			<div class="text-xs text-50 mt-1">Checking title, description, category, and tags.</div>
+			<div class="text-xs text-50 mt-1">Checking title, description, category, series, and tags.</div>
 		</div>
 	{:else if hasSearched && result.length === 0}
 		<div class="search-feedback-card mt-2">
@@ -245,6 +247,9 @@ top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
 				<div class="flex flex-wrap gap-1.5 mb-1.5">
 					{#if item.meta.category}
 						<span class="search-chip">{item.meta.category}</span>
+					{/if}
+					{#if item.meta.series}
+						<span class="search-chip">{i18n(I18nKey.series)}: {item.meta.series}</span>
 					{/if}
 					{#each parseTags(item.meta.tags) as tag}
 						<span class="search-chip">#{tag}</span>

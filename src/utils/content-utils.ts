@@ -1,7 +1,7 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-import { getCategoryUrl } from "@utils/url-utils.ts";
+import { getCategoryUrl, getSeriesUrl } from "@utils/url-utils.ts";
 
 const ALLOWED_POST_FOLDERS = new Set([
 	"notes",
@@ -128,4 +128,41 @@ export async function getCategoryList(): Promise<Category[]> {
 		});
 	}
 	return ret;
+}
+
+export type Series = {
+	name: string;
+	count: number;
+	url: string;
+};
+
+export async function getSeriesList(): Promise<Series[]> {
+	const allBlogPosts = await getCollection<"posts">("posts", ({ data, id }) => {
+		const isPublished = import.meta.env.PROD ? data.draft !== true : true;
+		return isPublished && isAllowedPostFolder(id);
+	});
+
+	const countMap: { [key: string]: number } = {};
+
+	allBlogPosts.forEach((post) => {
+		const seriesName =
+			typeof post.data.series === "string"
+				? post.data.series.trim()
+				: String(post.data.series ?? "").trim();
+
+		if (!seriesName) return;
+
+		if (!countMap[seriesName]) countMap[seriesName] = 0;
+		countMap[seriesName]++;
+	});
+
+	const keys: string[] = Object.keys(countMap).sort((a, b) => {
+		return a.toLowerCase().localeCompare(b.toLowerCase());
+	});
+
+	return keys.map((key) => ({
+		name: key,
+		count: countMap[key],
+		url: getSeriesUrl(key),
+	}));
 }

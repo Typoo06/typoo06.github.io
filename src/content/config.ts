@@ -1,6 +1,12 @@
 import { defineCollection, z } from "astro:content";
 
-const securityCategories = ["Labs", "Writeups", "Theory", "Notes", "Projects"] as const;
+const securityCategories = [
+	"Labs",
+	"Writeups",
+	"Theory",
+	"Notes",
+	"Projects",
+] as const;
 
 const postsCollection = defineCollection({
 	schema: z.object({
@@ -11,6 +17,7 @@ const postsCollection = defineCollection({
 		description: z.string().optional().default(""),
 		image: z.string().optional().default(""),
 		tags: z.array(z.string()).optional().default([]),
+		series: z.string().optional().default(""),
 		category: z.enum(securityCategories).optional().nullable().default("Notes"),
 		lang: z.string().optional().default(""),
 
