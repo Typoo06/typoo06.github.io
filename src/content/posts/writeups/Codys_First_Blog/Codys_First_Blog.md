@@ -14,7 +14,7 @@ draft: false
 ![Cody's first blog](./cody.png)
 
 2. Let's do some research on PHP vulnerabilites, yeah, I had very little prior experience with websites running on PHP. But, after doing research, i found a lot of information on vulns and CVEs from this past version. And i learned that it's possible to display a vulnerable site's PHP configuration through the use of the phpinfo function:
-
+```php
 <?php phpinfo; ?>
 ```
 3. Let's try with this site:
