@@ -1,5 +1,5 @@
 ---
-title: [Hacker101-CTF] Cody's First Blog
+title: "[Hacker101-CTF] Cody's First Blog"
 published: 2026-04-23
 description: Conducted web application penetration testing on Cody's First Blog (Hacker101 CTF), successfully exploiting File Inclusion (LFI/RFI) and PHP Code Injection to achieve Remote Code Execution (RCE), and documenting the attack vectors.
 tags: [Writeups, Labs, Hacker101, CTF, File Inclusion (LFI/RFI), PHP Code Injection, RCE]
