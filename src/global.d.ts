@@ -18,6 +18,10 @@ interface SearchResult {
 	url: string;
 	meta: {
 		title: string;
+		description?: string;
+		category?: string;
+		tags?: string;
+		[key: string]: string | undefined;
 	};
 	excerpt: string;
 	content?: string;

@@ -4,7 +4,8 @@ import Pagination from "../components/control/Pagination.astro";
 import PostPage from "../components/PostPage.astro";
 import { PAGE_SIZE } from "../constants/constants";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
-import { getSortedPosts } from "../utils/content-utils";
+import { getCategoryList, getSortedPosts } from "../utils/content-utils";
+import { getCategoryUrl, getPostUrlBySlug, url } from "../utils/url-utils";
 
 export const getStaticPaths = (async ({ paginate }) => {
 	const allBlogPosts = await getSortedPosts();
@@ -15,9 +16,87 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page } = Astro.props;
 
 const len = page.data.length;
+const isFirstPage = page.currentPage === 1;
+const allPosts = await getSortedPosts();
+const featuredPosts =
+	allPosts.filter((post) => post.data.tags.some((tag) => tag.toLowerCase() === "featured"))
+		.slice(0, 3);
+const fallbackFeaturedPosts = allPosts.slice(0, 3);
+const categoryList = await getCategoryList();
+const securityCategories = ["Labs", "Writeups", "Theory", "Notes", "Projects"];
 ---
 
-<MainGridLayout>
-    <PostPage page={page}></PostPage>
-    <Pagination class="mx-auto onload-animation" page={page} style={`animation-delay: calc(var(--content-delay) + ${(len)*50}ms)`}></Pagination>
+<MainGridLayout title="Home" description="Security learning portfolio and technical blog">
+	{isFirstPage && (
+		<>
+			<section class="card-base px-6 md:px-9 py-7 mb-4 onload-animation">
+				<div class="flex flex-wrap items-center gap-3 mb-4">
+					<span class="btn-regular rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide">
+						Pentest learner
+					</span>
+					<span class="btn-regular rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide">
+						Bug bounty practice
+					</span>
+				</div>
+				<h1 class="text-3xl md:text-4xl font-bold text-90 mb-3">
+					Professional Security Notes With A Personal Touch
+				</h1>
+				<p class="text-50 mb-6 max-w-3xl">
+					I document offensive security labs, writeups, and practical notes while learning in public.
+					The goal is to keep entries concise, technical, and useful for other learners.
+				</p>
+				<div class="flex flex-wrap gap-2">
+					<a href={url("/posts/")} class="btn-regular rounded-lg px-4 py-2 font-semibold">Browse Posts</a>
+					<a href={url("/projects/")} class="btn-regular rounded-lg px-4 py-2 font-semibold">View Projects</a>
+					<a href={url("/archive/")} class="btn-plain rounded-lg px-4 py-2 font-semibold">Open Archive</a>
+				</div>
+			</section>
+
+			<section class="card-base px-6 md:px-9 py-6 mb-4 onload-animation" style="animation-delay: 80ms">
+				<div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
+					<h2 class="text-2xl font-bold text-90">Featured Notes</h2>
+					<a href={url("/posts/")} class="link-lg text-sm font-semibold text-[var(--primary)]">See all posts</a>
+				</div>
+				<div class="grid md:grid-cols-3 gap-3">
+					{(featuredPosts.length > 0 ? featuredPosts : fallbackFeaturedPosts).map((post) => (
+						<a
+							href={getPostUrlBySlug(post.slug)}
+							class="btn-card rounded-xl px-4 py-4 flex flex-col items-start text-left gap-2 group"
+						>
+							<div class="text-xs uppercase tracking-wide text-50">{post.data.category || "Notes"}</div>
+							<div class="font-bold text-90 group-hover:text-[var(--primary)] transition line-clamp-2">
+								{post.data.title}
+							</div>
+							<div class="text-sm text-50 line-clamp-3">
+								{post.data.description || "Practical security learning notes."}
+							</div>
+						</a>
+					))}
+				</div>
+			</section>
+
+			<section class="card-base px-6 md:px-9 py-6 mb-4 onload-animation" style="animation-delay: 120ms">
+				<h2 class="text-2xl font-bold text-90 mb-4">Security Categories</h2>
+				<div class="flex flex-wrap gap-2">
+					{securityCategories.map((name) => {
+						const existing = categoryList.find((category) => category.name.toLowerCase() === name.toLowerCase());
+						const count = existing ? existing.count : 0;
+						return (
+							<a href={getCategoryUrl(name)} class="btn-regular rounded-lg px-3 py-1.5 text-sm font-medium">
+								{name} ({count})
+							</a>
+						);
+					})}
+				</div>
+			</section>
+		</>
+	)}
+
+	<section class="card-base px-6 md:px-9 py-5 mb-4 onload-animation" style="animation-delay: 140ms">
+		<h2 class="text-2xl font-bold text-90">Recent Posts</h2>
+		<p class="text-50 text-sm mt-1">Latest entries across labs, writeups, theory, notes, and project updates.</p>
+	</section>
+
+	<PostPage page={page}></PostPage>
+	<Pagination class="mx-auto onload-animation" page={page} style={`animation-delay: calc(var(--content-delay) + ${(len)*50}ms)`}></Pagination>
 </MainGridLayout>

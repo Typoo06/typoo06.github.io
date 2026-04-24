@@ -26,7 +26,8 @@ import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-cop
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://fuwari.vercel.app/",
+	// Update site/base to your own GitHub Pages target before deployment.
+	site: "https://Typoo06.github.io/",
 	base: "/",
 	trailingSlash: "always",
 	integrations: [

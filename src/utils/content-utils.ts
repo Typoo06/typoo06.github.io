@@ -3,10 +3,25 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { getCategoryUrl } from "@utils/url-utils.ts";
 
+const ALLOWED_POST_FOLDERS = new Set([
+	"notes",
+	"labs",
+	"labss",
+	"projects",
+	"theory",
+	"writeups",
+]);
+
+function isAllowedPostFolder(id: string): boolean {
+	const [topLevelFolder = ""] = id.split("/");
+	return ALLOWED_POST_FOLDERS.has(topLevelFolder.toLowerCase());
+}
+
 // // Retrieve posts and sort them by publication date
 async function getRawSortedPosts() {
-	const allBlogPosts = await getCollection("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
+	const allBlogPosts = await getCollection("posts", ({ data, id }) => {
+		const isPublished = import.meta.env.PROD ? data.draft !== true : true;
+		return isPublished && isAllowedPostFolder(id);
 	});
 
 	const sorted = allBlogPosts.sort((a, b) => {
@@ -52,8 +67,9 @@ export type Tag = {
 };
 
 export async function getTagList(): Promise<Tag[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
+	const allBlogPosts = await getCollection<"posts">("posts", ({ data, id }) => {
+		const isPublished = import.meta.env.PROD ? data.draft !== true : true;
+		return isPublished && isAllowedPostFolder(id);
 	});
 
 	const countMap: { [key: string]: number } = {};
@@ -79,8 +95,9 @@ export type Category = {
 };
 
 export async function getCategoryList(): Promise<Category[]> {
-	const allBlogPosts = await getCollection<"posts">("posts", ({ data }) => {
-		return import.meta.env.PROD ? data.draft !== true : true;
+	const allBlogPosts = await getCollection<"posts">("posts", ({ data, id }) => {
+		const isPublished = import.meta.env.PROD ? data.draft !== true : true;
+		return isPublished && isAllowedPostFolder(id);
 	});
 	const count: { [key: string]: number } = {};
 	allBlogPosts.forEach((post: { data: { category: string | null } }) => {

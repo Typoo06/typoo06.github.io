@@ -47,8 +47,8 @@ title: ${args[0]}
 published: ${getDate()}
 description: ''
 image: ''
-tags: []
-category: ''
+tags: [security]
+category: 'Notes'
 draft: false 
 lang: ''
 ---

@@ -3,10 +3,10 @@ import { onMount } from "svelte";
 
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
-import { getPostUrlBySlug } from "../utils/url-utils";
+import { getPostUrlBySlug, url } from "../utils/url-utils";
 
-export let tags: string[];
-export let categories: string[];
+export let tags: string[] = [];
+export let categories: string[] = [];
 export let sortedPosts: Post[] = [];
 
 const params = new URLSearchParams(window.location.search);
@@ -14,12 +14,18 @@ tags = params.has("tag") ? params.getAll("tag") : [];
 categories = params.has("category") ? params.getAll("category") : [];
 const uncategorized = params.get("uncategorized");
 
+const activeFilters: string[] = [
+    ...tags.map((tag) => `#${tag}`),
+    ...categories,
+    ...(uncategorized ? [i18n(I18nKey.uncategorized)] : []),
+];
+
 interface Post {
 	slug: string;
 	data: {
 		title: string;
 		tags: string[];
-		category?: string;
+        category?: string | null;
 		published: Date;
 	};
 }
@@ -86,6 +92,25 @@ onMount(async () => {
 </script>
 
 <div class="card-base px-8 py-6">
+    {#if activeFilters.length > 0}
+        <div class="mb-5 flex flex-wrap items-center gap-2">
+            {#each activeFilters as activeFilter}
+                <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold
+                  bg-[var(--btn-regular-bg)] text-[var(--btn-content)]"
+                >
+                    {activeFilter}
+                </span>
+            {/each}
+            <a href={url("/archive/")} class="link-lg text-sm font-semibold text-[var(--primary)]">Clear filters</a>
+        </div>
+    {/if}
+
+    {#if groups.length === 0}
+        <div class="rounded-xl border border-dashed border-[var(--line-divider)] px-4 py-4 text-sm text-50">
+            No posts matched the current archive filters. Try a different tag/category or clear filters.
+        </div>
+    {/if}
+
     {#each groups as group}
         <div>
             <div class="flex flex-row w-full items-center h-[3.75rem]">

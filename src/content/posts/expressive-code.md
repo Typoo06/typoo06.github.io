@@ -2,8 +2,8 @@
 title: Expressive Code Example
 published: 2024-04-10
 description: How code blocks look in Markdown using Expressive Code.
-tags: [Markdown, Blogging, Demo]
-category: Examples
+tags: [Markdown, Labs, Tooling]
+category: Labs
 draft: false
 ---
 
@@ -19,6 +19,49 @@ Here, we'll explore how code blocks look using [Expressive Code](https://express
 
 ```js
 console.log('This code is syntax highlighted!')
+```
+
+#### Additional language examples
+
+```php
+<?php
+declare(strict_types=1);
+
+function greet(string $name): string
+{
+    return "Hello, {$name}!";
+}
+
+echo greet('Fuwari');
+```
+
+```sql
+SELECT id, title, published
+FROM posts
+WHERE category = 'Labs'
+ORDER BY published DESC
+LIMIT 5;
+```
+
+```graphql
+query LatestWriteups($limit: Int = 5) {
+  posts(category: "Writeups", limit: $limit) {
+    id
+    title
+    tags
+    published
+  }
+}
+```
+
+```js title="mongodb-query.js"
+db.posts
+  .find(
+    { category: 'Notes', tags: { $in: ['Tooling'] } },
+    { title: 1, published: 1, _id: 0 }
+  )
+  .sort({ published: -1 })
+  .limit(5)
 ```
 
 #### Rendering ANSI escape sequences
@@ -102,7 +145,7 @@ New-Alias tail Watch-Tail
 
 #### Selecting line marker types (mark, ins, del)
 
-```js title="line-markers.js" del={2} ins={3-4} {6}
+```js title="line-marker    s.js" del={2} ins={3-4} {6}
 function demo() {
   console.log('this line is marked as deleted')
   // This line and the next one are marked as inserted

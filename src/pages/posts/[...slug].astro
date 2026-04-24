@@ -83,6 +83,22 @@ const jsonLd = {
                 </div>
             </div>
 
+            <div class="sr-only" aria-hidden="true">
+                {entry.data.description && (
+                    <span data-pagefind-meta="description" data-pagefind-weight="6">
+                        {entry.data.description}
+                    </span>
+                )}
+                <span data-pagefind-meta="category" data-pagefind-filter="category">
+                    {entry.data.category || i18n(I18nKey.uncategorized)}
+                </span>
+                {entry.data.tags.length > 0 && (
+                    <span data-pagefind-meta="tags" data-pagefind-filter="tags">
+                        {entry.data.tags.join(", ")}
+                    </span>
+                )}
+            </div>
+
             <!-- metadata -->
             <div class="onload-animation">
                 <PostMetadata
