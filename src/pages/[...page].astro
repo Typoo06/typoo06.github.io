@@ -18,9 +18,11 @@ const { page } = Astro.props;
 const len = page.data.length;
 const isFirstPage = page.currentPage === 1;
 const allPosts = await getSortedPosts();
-const featuredPosts =
-	allPosts.filter((post) => post.data.tags.some((tag) => tag.toLowerCase() === "featured"))
-		.slice(0, 3);
+const featuredPosts = allPosts
+	.filter((post) =>
+		post.data.tags.some((tag) => tag.toLowerCase() === "featured"),
+	)
+	.slice(0, 3);
 const fallbackFeaturedPosts = allPosts.slice(0, 3);
 const categoryList = await getCategoryList();
 const securityCategories = ["Labs", "Writeups", "Theory", "Notes", "Projects"];
@@ -39,11 +41,10 @@ const securityCategories = ["Labs", "Writeups", "Theory", "Notes", "Projects"];
 					</span>
 				</div>
 				<h1 class="text-3xl md:text-4xl font-bold text-90 mb-3">
-					Professional Security Notes With A Personal Touch
+					Aki’s Little Notes
 				</h1>
 				<p class="text-50 mb-6 max-w-3xl">
-					I document offensive security labs, writeups, and practical notes while learning in public.
-					The goal is to keep entries concise, technical, and useful for other learners.
+					Just a small space where I keep my notes and writeups while learning offensive security.
 				</p>
 				<div class="flex flex-wrap gap-2">
 					<a href={url("/posts/")} class="btn-regular rounded-lg px-4 py-2 font-semibold">Browse Posts</a>
