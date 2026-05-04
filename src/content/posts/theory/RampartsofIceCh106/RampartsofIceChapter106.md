@@ -1,9 +1,9 @@
 ---
-title: Simple Guides for Fuwari
-published: 2024-04-01
-description: "How to use this blog template."
+title: Comic Mode demo - Ramparts of Ice Ch.106
+published: 2026-05-04
+description: "Ramparts of Ice Chapter 106"
 image: "./cover.jpg"
-tags: ["Fuwari", "Blogging", "Customization"]
+tags: ["Blogging", "Comic", "Demo", "Customization"]
 category: Notes
 comic: true
 draft: false
