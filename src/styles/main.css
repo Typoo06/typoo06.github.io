@@ -110,6 +110,19 @@
     .btn-regular-dark.success {
         @apply bg-[oklch(0.75_0.14_var(--hue))] dark:bg-[oklch(0.75_0.14_var(--hue))]
     }
+
+    .comic-post {
+        @apply bg-transparent p-0;
+    }
+    .comic-mode .markdown-content {
+        @apply mb-0;
+    }
+    .comic-mode .markdown-content p {
+        @apply my-2;
+    }
+    .comic-mode .markdown-content img {
+        @apply block w-full rounded-none;
+    }
 }
 
 .custom-md img, #post-cover img {

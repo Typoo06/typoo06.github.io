@@ -20,6 +20,7 @@ const postsCollection = defineCollection({
 		series: z.string().optional().default(""),
 		category: z.enum(securityCategories).optional().nullable().default("Notes"),
 		lang: z.string().optional().default(""),
+		comic: z.boolean().optional().default(false),
 
 		/* For internal use */
 		prevTitle: z.string().default(""),
